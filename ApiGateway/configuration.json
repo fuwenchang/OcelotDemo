@@ -1,0 +1,34 @@
+{
+  "ReRoutes": [
+    {
+      //上游Api请求格式
+      "UpstreamPathTemplate": "/Api_A/{controller}/{action}",
+      //网关转发到下游格式
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      //上下游支持请求方法
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
+      "DownstreamScheme": "http",
+      //下游服务配置
+      "DownstreamHostAndPorts": [
+        {
+          //下游地址
+          "Host": "localhost",
+          //下游端口号
+          "Port": 5001
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/Api_B/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ]
+    }
+  ]
+}
