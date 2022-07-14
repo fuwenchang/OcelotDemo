@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_A.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -18,10 +19,10 @@ namespace Api_A.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetApiA")]
+        [HttpGet("GetApiA/{id}")]
         public string Get(int id)
         {
-            return "这是Api_A";
+            return $"{this.HttpContext.Request.Host.Port},这是Api_A";
         }
     }
 }

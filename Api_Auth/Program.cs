@@ -1,5 +1,8 @@
-var builder = WebApplication.CreateBuilder(args);
+using Api_Auth;
 
+var builder = WebApplication.CreateBuilder(args).Inject(); ;
+var configurationBuild = builder.Configuration.AddJsonFile("appsettings.json");
+var configuration = configurationBuild.Build();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -18,7 +21,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 

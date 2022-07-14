@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api_B.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -18,10 +18,11 @@ namespace Api_B.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetApiB")]
+        [HttpGet("GetApiB/{id}")]
         public string Get(int id)
         {
-            return "这是Api_B";
+            var x = HttpContext.Request;
+            return $"{HttpContext.Request.Host.Port},这是Api_B";
         }
     }
 }
