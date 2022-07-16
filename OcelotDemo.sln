@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api_Auth", "Api_Auth\Api_Auth.csproj", "{5FBA3308-4270-4DC1-903E-C4527ADB0102}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entity", "Entity\Entity.csproj", "{D67B4953-6AA3-497F-AF1B-B9530ED2E04C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entity", "Entity\Entity.csproj", "{D67B4953-6AA3-497F-AF1B-B9530ED2E04C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hys.Framework", "Hys.Framework\Hys.Framework.csproj", "{196D626A-9E30-436C-8625-70D20D70D39B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D67B4953-6AA3-497F-AF1B-B9530ED2E04C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D67B4953-6AA3-497F-AF1B-B9530ED2E04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D67B4953-6AA3-497F-AF1B-B9530ED2E04C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{196D626A-9E30-436C-8625-70D20D70D39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{196D626A-9E30-436C-8625-70D20D70D39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{196D626A-9E30-436C-8625-70D20D70D39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{196D626A-9E30-436C-8625-70D20D70D39B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
