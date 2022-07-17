@@ -1,0 +1,41 @@
+{
+  "Routes": [
+    {
+      /*"UseServiceDiscovery": true  开启服务发现的时候需要定义ServerName，
+        ServerName的名字需要跟Consul的服务名字一致，同时需要注释DownstreamHostAndPorts，
+        如果不开启服务发现"UseServiceDiscovery": false 的话需要定义DownstreamHostAndPorts，否则将会报错
+      */
+      "UpstreamPathTemplate": "/Api_A/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
+      "DownstreamScheme": "http",
+      "UseServiceDiscovery": true,
+      "ServiceName": "api_a",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/Api_B/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5004
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5030",
+    "ServiceDiscoveryProvider": {
+      "Scheme": "http",
+      "Host": "127.0.0.1",
+      "Port": 8500,
+      "Provider": "Consul"
+    }
+
+  }
+}

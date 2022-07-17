@@ -1,0 +1,117 @@
+//*****************************单地址********************************
+{
+  "Routes": [
+    {
+      //转发到下游服务地址--url变量
+      "DownstreamPathTemplate": "/api/{url}",
+      //下游http协议
+      "DownstreamScheme": "http",
+      //负载方式，
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin" // 轮询
+      },
+      //上游地址
+      "UpstreamPathTemplate": "/Api_A/{url}", //网关地址--url变量   //冲突的还可以加权重Priority
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
+      "UseServiceDisConvery": true, //使用服务发现
+      "ServiceName": "api_a" //Consul服务名称
+      //熔断设置,熔断器使用Polly
+      //"QoSOptions": {
+      //  "ExceptionsAllowedBeforeBreaking": 3, //允许多少个异常请求
+      //  "DurationOfBreak": 10000, // 熔断的时间10s，单位为ms
+      //  "TimeoutValue": 5000 //单位ms,如果下游请求的处理时间超过多少则自动将请求设置为超时 默认90秒
+      //}
+      ////鉴权
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer", //指定一个key
+      //  "AllowedScopes": [ "gatewayScope" ] //id4的作用域名称
+      //}
+    }
+  ],
+  "GlobalConfiguration": {
+    //Ocelot应用对外地址
+    "BaseUrl": "http://localhost:5030",
+    "ServiceDiscoveryProvider": {
+      //Consul地址
+      "Host": "127.0.0.1",
+      //Consul端口
+      "Port": 8500,
+      "Type": "Consul" //由Consul提供服务发现，每次请求Consul
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//{
+//  "Routes": [
+//    {
+//      /*"UseServiceDiscovery": true  开启服务发现的时候需要定义ServerName，
+//        ServerName的名字需要跟Consul的服务名字一致，同时需要注释DownstreamHostAndPorts，
+//        如果不开启服务发现"UseServiceDiscovery": false 的话需要定义DownstreamHostAndPorts，否则将会报错
+//      */
+//      "UpstreamPathTemplate": "/Api_A/{controller}/{action}",
+//      "DownstreamPathTemplate": "/api/{controller}/{action}",
+//      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
+//      "DownstreamScheme": "http",
+//      "UseServiceDiscovery": true,
+//      "ServiceName": "api_a",
+//      "LoadBalancerOptions": {
+//        "Type": "RoundRobin"
+//      }
+//    },
+//    {
+//      "UpstreamPathTemplate": "/Api_B/{controller}/{action}",
+//      "DownstreamPathTemplate": "/api/{controller}/{action}",
+//      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 5004
+//        }
+//      ]
+//    }
+//  ],
+//  "GlobalConfiguration": {
+//    "BaseUrl": "http://localhost:5030",
+//    "ServiceDiscoveryProvider": {
+//      "Scheme": "http",
+//      "Host": "127.0.0.1",
+//      "Port": 8500,
+//      "Provider": "Consul"
+//      //"Type": "Consul"
+//    }
+
+//  }
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Hys.Framework.Consul
 {
@@ -18,8 +19,11 @@ namespace Hys.Framework.Consul
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
-        public static void AddConsul(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IApplicationBuilder AddConsul(this IApplicationBuilder app, IConfigurationRoot configuration)
         {
+            // 获取主机生命周期管理接口
+            var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+
             ConsulClient consulClient = new ConsulClient(
                 x => x.Address = new Uri("http://localhost:8500/")
                 );
@@ -29,31 +33,39 @@ namespace Hys.Framework.Consul
                 下面的port一样
             */
 
-            string ip = configuration["ip"];
-            int port = int.Parse(configuration["port"]);
+            //Console.WriteLine($"mirth connect ip:{configuration["mirthip"]}");
+
+            string ip = string.IsNullOrEmpty(configuration["ip"])?configuration["Consul:ServerAddress"] : configuration["ip"];
+            int port = int.Parse(string.IsNullOrEmpty(configuration["port"]) ? configuration["Consul:ServciePort"] : configuration["port"]);
             var httpCheck = new AgentServiceCheck()
             {
                 DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5),//服务启动多久后注册
                 Interval = TimeSpan.FromSeconds(10),//健康检查时间间隔，或者称为心跳间隔
                 Timeout = TimeSpan.FromSeconds(5),
-                HTTP = $"http://{ip}:{port}/HealthCheck/Status",
-                
+                HTTP = $"http://{ip}:{port}/HealthCheck/Status"
             };
 
             // Register service with consul
+            string serviceId = $"service:{ip}:{port}";//服务ID，一个服务是唯一的
             var registration = new AgentServiceRegistration()
             {
                 Checks = new[] { httpCheck },
-                ID = Guid.NewGuid().ToString(),
+                ID = serviceId,
                 Name = configuration["Consul:ServiceName"],
                 Address = ip,
-                Port = port,
+                Port = port,                
                 Tags = new[] { $"urlprefix-/{configuration["Consul:Tags"]}" }//添加 urlprefix-/servicename 格式的 tag 标签，以便 Fabio 识别
             };
 
             consulClient.Agent.ServiceRegister(registration).Wait();//服务启动时注册，内部实现其实就是使用 Consul API 进行注册（HttpClient发起）
 
-            services.AddSingleton(consulClient);
+            //应用程序终止时,注销服务
+            lifetime.ApplicationStopping.Register(() =>
+            {
+                consulClient.Agent.ServiceDeregister(serviceId).Wait();
+            });
+
+            return app;
         }
 
         /// <summary>
