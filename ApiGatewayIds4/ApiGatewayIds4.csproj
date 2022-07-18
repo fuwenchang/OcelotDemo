@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ocelot" Version="18.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Ocelot.Provider.Consul\src\Ocelot.Provider.Consul\Ocelot.Provider.Consul.csproj" />
-    <ProjectReference Include="..\Hys.Framework\Hys.Framework.csproj" />
+    <PackageReference Include="Ocelot" Version="17.0.0" />
+    <PackageReference Include="Ocelot.Provider.Consul" Version="17.0.0" />
   </ItemGroup>
 
 </Project>

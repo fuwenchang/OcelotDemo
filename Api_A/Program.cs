@@ -15,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 //{
 //    options.SwaggerDoc("ApiGateway", new OpenApiInfo { Title = "Íø¹Ø·þÎñ", Version = "v1" });
 //});
+builder.Services.AddHttpClient();
 
 
 var app = builder.Build();
