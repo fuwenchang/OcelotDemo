@@ -1,3 +1,4 @@
+using Api_A.Filter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,11 +8,6 @@ namespace Api_A.Controllers
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
         private readonly ILogger<WeatherForecastController> _logger;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
@@ -23,6 +19,29 @@ namespace Api_A.Controllers
         public string Get(int id)
         {
             return $"{this.HttpContext.Request.Host.Port},这是Api_A";
+        }
+
+        [Authorize(Policy = "policy1")]
+        [HttpGet("GetApiAJwtPolicy/{id}")]
+        public string GetApiAJwt(int id)
+        {
+            var httpContext = this.HttpContext.Request;
+            return "Jwt授权策略";
+        }
+
+        [ServiceFilter(typeof(SimpleActionFilter))]
+        [Authorize(Roles = "admin")]
+        [HttpGet("GetApiAJwtRole/{id}")]
+        public string GetApiAJwtRole(int id)
+        {
+            return "Jwt角色授权策略";
+        }
+
+        [HttpGet("GetApiANoAuth/{id}")]
+        public string GetApiANoAuth(int id)
+        {
+            var context = this.HttpContext.Request;
+            return "没有授权";
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Api_Auth
         /// 用户名
         /// </summary>
         /// <example>superAdmin</example>
-        [Required(ErrorMessage = "用户名不能为空"), MinLength(5, ErrorMessage = "用户名不能少于5位字符")]
+        [Required(ErrorMessage = "用户名不能为空"), MinLength(1, ErrorMessage = "用户名不能少于5位字符")]
         public string Account { get; set; }
 
         /// <summary>
