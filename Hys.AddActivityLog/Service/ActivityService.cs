@@ -35,19 +35,19 @@ namespace Hys.AddActivityLog
             try
             {
                 var activityDailies = new List<ActivityDaily>();
-                while (_csredis.LLen(RedisKey.ActivityDaily) > 0)
+                while (_csredis.LLen(RedisKey.ActivityDaily) > 0 && activityDailies.Count < 50)
                 {
                     var result = _csredis.LPop<ActivityDaily>(RedisKey.ActivityDaily);
 
                     activityDailies.Add(result);
                 }
 
-                if (activityDailies.Count > 50)
+                if (activityDailies.Count > 0)
                 {
                     await _context.ActivityDailies.AddRangeAsync(activityDailies);
                     await _context.SaveChangesAsync();
                 }
-                
+
             }
             catch (Exception e)
             {
