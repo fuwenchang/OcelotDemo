@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGatewayIds4", "ApiGatewa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.IdentityServer", "Persistence.IdentityServer\Persistence.IdentityServer.csproj", "{45DAAFC7-6F72-4773-B94E-89C6C1A711B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hys.AddActivityLog", "Hys.AddActivityLog\Hys.AddActivityLog.csproj", "{58E76E64-4FE8-437C-A649-A67CF1F4C9B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{45DAAFC7-6F72-4773-B94E-89C6C1A711B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45DAAFC7-6F72-4773-B94E-89C6C1A711B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45DAAFC7-6F72-4773-B94E-89C6C1A711B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58E76E64-4FE8-437C-A649-A67CF1F4C9B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58E76E64-4FE8-437C-A649-A67CF1F4C9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58E76E64-4FE8-437C-A649-A67CF1F4C9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58E76E64-4FE8-437C-A649-A67CF1F4C9B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

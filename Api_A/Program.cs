@@ -1,12 +1,14 @@
 using System.Text;
-using System.Text.RegularExpressions;
+
 using Api_A.Filter;
+
+using Hys.AddActivityLog;
 using Hys.Framework.Consul;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args).Inject();
 var configBuild = builder.Configuration.AddJsonFile("appsettings.Development.json");
 var configuration = configBuild.Build();
 
@@ -43,6 +45,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpClient();
 
+// 注入定时任务
+builder.Services.AddActivity(configuration);
 
 
 var app = builder.Build();
