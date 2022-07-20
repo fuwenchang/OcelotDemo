@@ -8,31 +8,22 @@
       "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ],
       // 指定请求协议
       "DownstreamScheme": "http",
-      // 负载均衡（如果没有多个服务器，则可以不写）
-      "LoadBalancerOptions": {
-        "Type": "RoundRobin" // 轮询的方式请求
-      },
       // 指定下游服务的服务地址和端口
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 5001
-        },
-        {
-          "Host": "localhost",
-          "Port": 5004
         }
       ],
       // 认证（Bearer：默认的方式）
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
-      },
-      // 授权（会解析jwt中的claims的信息，即claims中SuperAdmin = 2的可以访问）
-      "RouteClaimsRequirement": {
-        "SuperAdmin": 2
       }
-
+      // 授权（会解析jwt中的claims的信息，即claims中SuperAdmin = 2的可以访问）
+      //"RouteClaimsRequirement": {
+      //  "SuperAdmin": 2
+      //}
     },
     {
       "UpstreamPathTemplate": "/Api_B/{controller}/{action}",

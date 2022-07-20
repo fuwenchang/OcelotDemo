@@ -47,5 +47,7 @@
         /// </summary>
         public const string SCOPES = "scope";
 
+        public const string Roles = "roles";
+
     }
 }

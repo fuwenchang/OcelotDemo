@@ -1,39 +1,54 @@
+using System.Text;
 using System.Text.RegularExpressions;
+using Api_A.Filter;
 using Hys.Framework.Consul;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var configBuild = builder.Configuration.AddJsonFile("appsettings.Development.json");
 var configuration = configBuild.Build();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+#region 通过Jwt来进行授权
+// 加过滤器是为了考虑后面在过滤器中做更精确的授权
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(typeof(SimpleActionFilter));
+});
+builder.Services.AddSingleton<SimpleActionFilter>();
 
-//builder.Services.AddSwaggerGen(options =>
-//{
-//    options.SwaggerDoc("ApiGateway", new OpenApiInfo { Title = "网关服务", Version = "v1" });
-//});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        //取出私钥
+        var secretByte = Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]);
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            //验证发布者
+            ValidateIssuer = true,
+            ValidIssuer = configuration["Jwt:Issuer"],
+            //验证接收者
+            ValidateAudience = true,
+            ValidAudience = configuration["Jwt:Audience"],
+            //验证是否过期
+            ValidateLifetime = true,
+            //验证私钥
+            IssuerSigningKey = new SymmetricSecurityKey(secretByte)
+        };
+    });
+
+#endregion
+
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpClient();
 
 
+
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
-
 app.AddConsul(configuration);
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

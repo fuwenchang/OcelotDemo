@@ -51,7 +51,8 @@ namespace Api_Auth.Controllers
                 {ClaimConst.CLAINM_NAME, user.Name},
                 {ClaimConst.CLAINM_SUPERADMIN, user.AdminType},
                 {ClaimConst.DATA_SCOPES, dataScopes},
-                { ClaimConst.SCOPES ,scopes}
+                { ClaimConst.SCOPES ,scopes},
+                { ClaimConst.Roles,user.Roles}
             });
 
             // 设置Swagger自动登录
@@ -76,7 +77,8 @@ namespace Api_Auth.Controllers
                 TenantId = 123456,
                 Account = "zhangsan",
                 Name = "张三",
-                AdminType = AdminType.Admin               
+                AdminType = AdminType.Admin,
+                Roles = "admin"
             }) ;
 
             users.Add(new SysUser()
@@ -85,7 +87,8 @@ namespace Api_Auth.Controllers
                 TenantId = 123456,
                 Account = "lisi",
                 Name = "李四",
-                AdminType = AdminType.None
+                AdminType = AdminType.None,
+                Roles = "normal"
             });
 
             return users?.Find(a => a.Account == input?.Account);

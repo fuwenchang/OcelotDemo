@@ -106,6 +106,8 @@ namespace Api_Auth
         /// 多对多中间表（用户-角色）
         /// </summary>
         public List<SysUserRole> SysUserRoles { get; set; }
+
+        public string Roles { get; set; }
     }
 
     #region MyRegion
