@@ -28,6 +28,12 @@ namespace Api_A.Controllers
             return CommonResult.Success<string>($"{this.HttpContext.Request.Host.Port},这是Api_A");
         }
 
+        [HttpGet("TestFilter/{id}")]
+        public ApiResult<string> TestFilter(int id)
+        {
+            return CommonResult.Success<string>($"{this.HttpContext.Request.Host.Port},这是TEstFilter");
+        }
+
         [Authorize(Policy = "policy1")]
         [HttpGet("GetApiAJwtPolicy/{id}")]
         public string GetApiAJwt(int id)

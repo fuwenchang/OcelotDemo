@@ -34,6 +34,7 @@ namespace Hys.AddActivityLog.Middleware
             _csredis = csredis;
         }
 
+        #region 中间件过滤器已注释
         //public async Task Invoke(HttpContext context)
         //{
         //    var request = context.Request;
@@ -91,6 +92,8 @@ namespace Hys.AddActivityLog.Middleware
         //    // 放入redis
         //    _csredis.LPush(RedisKey.ActivityDaily, activityDaily);
         //}
+        #endregion
+
 
         public async Task Invoke(HttpContext context)
         {
@@ -109,7 +112,35 @@ namespace Hys.AddActivityLog.Middleware
             GetRequestInput(request, activityDaily);
 
             // 获取Response.Body内容
-            await GetResponseBody(context, activityDaily);
+            var originalBodyStream = context.Response.Body;
+
+            using (var responseBody = new MemoryStream())
+            {
+                context.Response.Body = responseBody;
+                await _next(context);
+
+                activityDaily.Output = await FormatResponse(context.Response);
+                activityDaily.ServiceEnd = DateTime.Now;
+                activityDaily.Duration = activityDaily.ServiceEnd.Subtract(activityDaily.ServiceStart).Milliseconds;
+
+                // 过滤器捕获到异常后，执行到这里，如果不加判断，日志会被里面的字段给代替掉
+                if (context.Response.StatusCode == 200)
+                {
+                    activityDaily.Status = 1;
+                    activityDaily.CallStatus = 1;
+                }
+                else
+                {
+                    activityDaily.Status = -1;
+                    activityDaily.CallStatus = -1;
+                }
+
+                _logger.LogInformation($"VisitLog: {Newtonsoft.Json.JsonConvert.SerializeObject(activityDaily)}");
+                // 将要保存的日志记录放入redis
+                _csredis.LPush(RedisKey.ActivityDaily, activityDaily);
+
+                await responseBody.CopyToAsync(originalBodyStream);
+            }
         }
 
         private ActivityDaily InitActivityDailyEntity(HttpContext context)
@@ -173,40 +204,6 @@ namespace Hys.AddActivityLog.Middleware
             else if (request.Method.ToLower().Equals("get"))
             {
                 activityDaily.Input = request.QueryString.Value ?? "";
-            }
-        }
-
-        /// <summary>
-        /// 获取Response.Body内容
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        private async Task GetResponseBody(HttpContext context, ActivityDaily activityDaily)
-        {
-            var originalBodyStream = context.Response.Body;
-
-            using (var responseBody = new MemoryStream())
-            {
-                context.Response.Body = responseBody;
-
-                await _next(context);
-
-                // 过滤器捕获到异常后，执行到这里，如果不加判断，日志会被里面的字段给代替掉
-                if (context.Response.StatusCode == 200)
-                {
-                    activityDaily.Output = await FormatResponse(context.Response);
-                    activityDaily.ServiceEnd = DateTime.Now;
-                    activityDaily.Duration = activityDaily.ServiceEnd.Subtract(activityDaily.ServiceStart).Milliseconds;
-                    activityDaily.Status = 1;
-                    activityDaily.CallStatus = 1;
-
-                    _logger.LogInformation($"VisitLog: {Newtonsoft.Json.JsonConvert.SerializeObject(activityDaily)}");
-
-                    // 放入redis
-                    _csredis.LPush(RedisKey.ActivityDaily, activityDaily);
-
-                    await responseBody.CopyToAsync(originalBodyStream);
-                }             
             }
         }
 
