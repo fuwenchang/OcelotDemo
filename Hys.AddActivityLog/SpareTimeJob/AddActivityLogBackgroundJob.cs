@@ -39,63 +39,9 @@ namespace Hys.AddActivityLog.SpareTimeJob
                 Console.WriteLine("现在时间：" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 Console.WriteLine($"一共执行了：{count} 次");
 
-                // 测试redis
-
-                //_csredis.LPush(RedisKey.ActivityDaily, new ActivityDaily()
-                //{
-                //    Id = count,
-                //    AccountId = "1",
-                //    ServiceId = "1",
-                //    InterfaceId = "1",
-                //    Duration = 1,
-                //    Status = 1,
-                //    CallStatus = 1,
-                //    ServiceStart = DateTime.Now,
-                //    ServiceEnd = DateTime.Now,
-                //    ServiceDuration = 100,
-                //    IsDeleted = false
-                //});
-
                 _activityService.AddActivityDaily().Wait();
 
             }, cronFormat: CronFormat.IncludeSeconds);
-        }
-
-        private List<ActivityDaily> InitData()
-        {
-            var entities = new List<ActivityDaily>();
-
-            entities.Add(new ActivityDaily()
-            {
-                Id = 1,
-                AccountId = "1",
-                ServiceId = "1",
-                InterfaceId = "1",
-                Duration = 1,
-                Status = 1,
-                CallStatus = 1,
-                ServiceStart = DateTime.Now,
-                ServiceEnd = DateTime.Now,
-                ServiceDuration = 100,
-                IsDeleted = false
-            });
-
-            entities.Add(new ActivityDaily()
-            {
-                Id = 2,
-                AccountId = "2",
-                ServiceId = "2",
-                InterfaceId = "2",
-                Duration = 2,
-                Status = 2,
-                CallStatus = 2,
-                ServiceStart = DateTime.Now,
-                ServiceEnd = DateTime.Now,
-                ServiceDuration = 200,
-                IsDeleted = false
-            });
-
-            return entities;
-        }
+        }        
     }
 }

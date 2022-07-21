@@ -3,6 +3,7 @@ using System.Text;
 using Api_A.Filter;
 
 using Hys.AddActivityLog;
+using Hys.AddActivityLog.Filter;
 using Hys.Framework.Consul;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,14 +13,15 @@ var builder = WebApplication.CreateBuilder(args).Inject();
 var configBuild = builder.Configuration.AddJsonFile("appsettings.Development.json");
 var configuration = configBuild.Build();
 
-#region 通过Jwt来进行授权
+
 // 加过滤器是为了考虑后面在过滤器中做更精确的授权
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(typeof(SimpleActionFilter));
+    options.Filters.Add(typeof(GlobalExceptionFilter));
 });
-builder.Services.AddSingleton<SimpleActionFilter>();
 
+#region 通过Jwt来进行授权
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -54,5 +56,6 @@ app.UseHttpsRedirection();
 app.AddConsul(configuration);
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseExceptionLogMiddleware();
 app.MapControllers();
 app.Run();

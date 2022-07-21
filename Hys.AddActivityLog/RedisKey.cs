@@ -10,6 +10,6 @@ namespace Hys.AddActivityLog
     {
         public const string ActivityDaily = $"HysHsb:Activity:ActityDaily";
 
-        public const string ActivityDailySubName = "ActityDailySubName";
+        public const string ActivityDailyId = "HysHsb:Activity:ActivityDailyId";
     }
 }

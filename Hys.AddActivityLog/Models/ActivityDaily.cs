@@ -21,11 +21,11 @@ namespace Hys.AddActivityLog.Models
         /// <summary>
         /// 服务Id
         /// </summary>
-        public string ServiceId { get; set; } = null!;
+        public string ServiceId { get; set; } = null!;                      //?
         /// <summary>
         /// 订阅Id
         /// </summary>
-        public string InterfaceId { get; set; } = null!;
+        public string InterfaceId { get; set; } = null!;                    //?
         /// <summary>
         /// 调用耗时（毫秒）
         /// </summary>
@@ -53,7 +53,7 @@ namespace Hys.AddActivityLog.Models
         /// <summary>
         /// 调用状态
         /// </summary>
-        public int CallStatus { get; set; }
+        public int CallStatus { get; set; }         //?
         /// <summary>
         /// 服务开始
         /// </summary>

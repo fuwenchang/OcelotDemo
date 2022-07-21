@@ -1,4 +1,8 @@
 using Api_A.Filter;
+
+using Hys.AddActivityLog;
+using Hys.AddActivityLog.Filter;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +20,12 @@ namespace Api_A.Controllers
         }
 
         [HttpGet("GetApiA/{id}")]
-        public string Get(int id)
+        public ApiResult<string> Get(int id)
         {
-            return $"{this.HttpContext.Request.Host.Port},这是Api_A";
+            int a = 0;
+            int b = 1;
+            int c = b / a;
+            return CommonResult.Success<string>($"{this.HttpContext.Request.Host.Port},这是Api_A");
         }
 
         [Authorize(Policy = "policy1")]
