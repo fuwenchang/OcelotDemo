@@ -148,7 +148,7 @@ namespace Hys.AddActivityLog.Middleware
             #region TODO:id自增，到时候看怎么修改
             if (string.IsNullOrEmpty(_csredis.Get(RedisKey.ActivityDailyId)))
             {
-                _csredis.Set(RedisKey.ActivityDailyId, 142303330922122);
+                _csredis.Set(RedisKey.ActivityDailyId, 142303330922148);
             }
             _csredis.IncrBy(RedisKey.ActivityDailyId);
             #endregion

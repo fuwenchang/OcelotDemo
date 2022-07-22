@@ -5,13 +5,18 @@ using Api_A.Filter;
 using Hys.AddActivityLog;
 using Hys.AddActivityLog.Filter;
 using Hys.Framework.Consul;
+using Hys.Framework.CustomLog;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+
 var builder = WebApplication.CreateBuilder(args).Inject();
-var configBuild = builder.Configuration.AddJsonFile("appsettings.Development.json");
+var configBuild = builder.Configuration.AddJsonFile("appsettings.Development.json",false, reloadOnChange: true);
 var configuration = configBuild.Build();
+
+// 将日志记录到文件中
+builder.UseSerilogConfig(Serilog.Events.LogEventLevel.Debug);
 
 
 // 加过滤器是为了考虑后面在过滤器中做更精确的授权
@@ -53,6 +58,8 @@ builder.Services.AddActivity(configuration);
 
 var app = builder.Build();
 app.UseHttpsRedirection();
+// 自带的http请求日志记录
+//app.UseHttpLogging();
 app.AddConsul(configuration);
 app.UseAuthentication();
 app.UseAuthorization();

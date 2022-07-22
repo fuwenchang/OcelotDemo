@@ -22,6 +22,7 @@ namespace Api_A.Controllers
         [HttpGet("GetApiA/{id}")]
         public ApiResult<string> Get(int id)
         {
+            _logger.LogDebug($"请求参数：{id}");
             int a = 0;
             int b = 1;
             int c = b / a;
@@ -31,6 +32,7 @@ namespace Api_A.Controllers
         [HttpGet("TestFilter/{id}")]
         public ApiResult<string> TestFilter(int id)
         {
+            _logger.LogDebug($"请求参数：{id}");
             return CommonResult.Success<string>($"{this.HttpContext.Request.Host.Port},这是TEstFilter");
         }
 

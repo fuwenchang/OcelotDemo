@@ -33,6 +33,7 @@ namespace Hys.AddActivityLog.Filter
             if (context.Exception is BusinessException)
             {
                 var ex = (BusinessException)context.Exception;
+                _logger.LogError($"[业务异常]：{ex.Message}");
                 context.Result = new ContentResult
                 {
                     StatusCode = StatusCodes.Status200OK,
@@ -42,6 +43,7 @@ namespace Hys.AddActivityLog.Filter
             }
             else
             {
+                _logger.LogError(context.Exception, $"[系统异常]：");
                 context.Result = new ContentResult
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
